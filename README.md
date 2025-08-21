@@ -274,5 +274,3 @@ git pull origin main  *->traer los cambios mergeados*
 **5. Opcional: eliminar rama**
 git branch -d rama_JuanPerez
 git push origin --delete rama_JuanPerez
-
-
