@@ -1,4 +1,4 @@
-'''
+
 #Lista = Ariel , Liliana , Natalia, Osvaldo
 
 nombres = ['Naty','Osvaldo', 'Lily','Ariel']
@@ -64,23 +64,3 @@ print(nombres)
 #Eliminar lista
 del nombres
 print(nombres)
-'''
-
-#Ejercicio N°1: Iterar un rango de 0 a 10 e imprimir numeros divisibles entre 3
-
-print('Rango números divisible por 3')
-for i in range(11):
-    if i % 3 == 0:
-        print(i)
-
-#Ejercicio N°2: Crear un rango de numeros de 2 a 6 e imprimelos
-print("Rango de numero de 2 a 6")
-rango = range(2, 7)
-for i in rango:
-    print(i)
-
-
-#Ejercicio N°3: crear un rango de 3 a 10, pero con incremento de 2 en 2.
-print('Rango de 2 en 2')
-for i in range (3, 11, 2):
-    print(i)
