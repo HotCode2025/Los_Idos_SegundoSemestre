@@ -3,7 +3,7 @@
 
 ## Comandos útiles de Git:
 -------------------------------------------------------------------------------------------------------------------------
-## Ayuda Memoria - Comandos Esenciales
+## Ayuda Memoria - Comandos Esenciales.
 
 ### ***📁 NAVEGACIÓN BÁSICA ENTRE DOCUMENTOS***
 
