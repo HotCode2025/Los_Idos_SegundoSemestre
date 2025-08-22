@@ -97,7 +97,11 @@
 
 1- Clonar el repositorio de Los Idos en una carpeta llamada 
 
-    git clone https://github.com/HotCode2025/los_Idos_SegundoSemestre.git los_Idos_SegundoSemestre cd los_Idos_SegundoSemestre
+    git clone https://github.com/HotCode2025/Los_Idos_SegundoSemestre.git 
+    
+    Los_Idos_SegundoSemestre 
+    
+    cd Los_Idos_SegundoSemestre
 
 
 2- Crear una rama nueva con el nombre de quien la está trabajando 
