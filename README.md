@@ -127,7 +127,9 @@
 
 2- Agregar cambios y confirmarlos en tu propia rama: 
 
-    git add . git commit -m "Mensaje con información sobre el cambio"
+    git add . 
+    
+    git commit -m "Mensaje con información sobre el cambio"
 
 3- Subir cambios a la rama (No a MAIN)
 
