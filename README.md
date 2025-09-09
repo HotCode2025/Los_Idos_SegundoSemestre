@@ -149,7 +149,7 @@
 
 2. Entrar a la carpeta
 
-       cd los_Idos_SegundoSemestre
+       cd Los_Idos_SegundoSemestre
 
 3. Crear tu rama personal
 
