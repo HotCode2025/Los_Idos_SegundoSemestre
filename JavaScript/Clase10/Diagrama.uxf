@@ -1,0 +1,43 @@
+<diagram program="umletino" version="15.1"><zoom_level>10</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>50</x><y>20</y><w>330</w><h>280</h></coordinates><panel_attributes>Orden
+--
+idOrden: number
+productos[]: Producto
+contadorProductosAgregados: number
+contadorOrdenes: number
+-------------------------------------
+MAX_PRODUCTOS: number = 5
+-------------------------------------------
+--
+Orden()
+agregarProducto(producto)
+calcularTotal(): number
+mostrarOrden()
+--
+Responsabilidades
+-- Crear objetos Orden
+*--Administrar los productos de una orden*</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>50</x><y>410</y><w>330</w><h>280</h></coordinates><panel_attributes>Producto
+--
+idProducto: number
+nombre: string
+precio: number
+contadorProductos: number
+-------------------------------------
+--
+Producto()
+getIdProducto(): number
+getNombre(): string
+setNombre(nombre)
+getPrecio(): number
+setPrecio(precio)
+toString(): string
+--
+Responsabilidades
+-- Crear objetos de tipo Producto
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>200</x><y>290</y><w>30</w><h>140</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;120</additional_attributes></element><element><id>Text</id><coordinates><x>210</x><y>340</y><w>260</w><h>30</h></coordinates><panel_attributes>&lt;&lt;Un Producto se agrega a una Orden&gt;&gt;</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>380</x><y>70</y><w>190</w><h>30</h></coordinates><panel_attributes>lt=&lt;..&gt;</panel_attributes><additional_attributes>10;10;170;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>560</x><y>20</y><w>320</w><h>150</h></coordinates><panel_attributes>VentasTest
+--
+Esto no es una clase
+Es la prueba de creación
+de objetos Producto y Orden
+--
+Responsabilidades
+-- Ejecutar la prueba de la aplicación de Ventas</panel_attributes><additional_attributes></additional_attributes></element></diagram>
