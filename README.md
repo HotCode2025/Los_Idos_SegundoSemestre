@@ -135,6 +135,46 @@
 
     git push origin **rama_JuanPerez**
 
+4- Ir a github y aprobar Pull Request de la rama, luego de aprobarlo, desde Git Bash CAMBIAR A LA RAMA MAIN:
+
+    git checkout main
+    git pull origin main
+
+5- Crear el tag anotado:
+
+    git tag -a v0.1.0 -m "v0.1.0: estructura base del proyecto X"
+
+6- Verificar el tag: 
+
+    git tag
+    git show v0.1.0
+
+7- Subir el tag:
+
+    git push origin v0.1.0
+    # (opcional) subir todos los tags locales:
+    # git push --tags
+
+8- Usar el tag (para lectura o para hotfix): 
+
+    git checkout v0.1.0            # detached HEAD (solo lectura)
+    git checkout -b hotfix/v0.1.1 v0.1.0  # rama desde el tag
+
+9- SI FUE UN ERROR, para borrar el tag: 
+
+    git tag -d v0.1.0
+    git push origin :refs/tags/v0.1.0
+
+*RESUMEN FÁCIL:*
+
+    git checkout main
+    git pull origin main
+    git tag -a v1.0.0 -m "v1.0.0: entrega final"
+    git push origin v1.0.0
+
+
+**Para más comandos sobre tags, leer guía al final.**
+
 -------------------------------------------------------------------------------------------------------------------------
 
  ## METODOLOGÍA DE TRABAJO COMPLETA 
@@ -443,4 +483,296 @@ SÍ usar "Create a merge commit"
     git branch -d rama_JuanPerez
 
     git push origin --delete rama_JuanPerez
+
+
+
+======================== **GUÍA Y TIPS SOBRE TAGS** ========================
+
+
+> Los **tags** marcan puntos específicos del historial (versiones, entregas, hitos).
+> Se usan para identificar **versiones estables** del proyecto, normalmente en `main` **después** de mergear un Pull Request.
+
+---
+
+## 1) ¿Qué es un tag?
+
+* Un **tag** es una etiqueta inmutable que “apunta” a un commit.
+* Sirve para **versionar** (ej.: `v1.0.0`) o marcar **hitos** (ej.: `entrega-parcial-1`).
+* En GitHub, los tags pueden convertirse en **Releases** con notas de cambios (*changelog*), binarios, etc.
+
+---
+
+## 2) Tipos de tags
+
+| Tipo                      | Comando                          | Cuándo usar                          | Pros                                             | Contras                                     |
+| ------------------------- | -------------------------------- | ------------------------------------ | ------------------------------------------------ | ------------------------------------------- |
+| **Anotado (recomendado)** | `git tag -a v1.0.0 -m "mensaje"` | Releases, entregas formales          | Guarda autor, fecha, mensaje; base para Releases | Un poco más de tipeo                        |
+| **Lightweight**           | `git tag v1.0.0`                 | Marcadores rápidos y temporales      | Simple y veloz                                   | No guarda metadatos; no ideal para releases |
+| **Firmado (GPG)**         | `git tag -s v1.0.0 -m "mensaje"` | Proyectos que requieren autenticidad | Verificable criptográficamente                   | Requiere configurar GPG                     |
+
+> **Recomendación del equipo:** usar **anotados** (`-a -m`) para todas las entregas/versiones.
+
+---
+
+## 3) Convención SemVer (Semántica de versiones)
+
+Formato: `vMAJOR.MINOR.PATCH`
+
+* **MAJOR**: cambios incompatibles (breaking changes).
+* **MINOR**: nuevas features compatibles.
+* **PATCH**: fixes sin romper compatibilidad.
+
+**Ejemplos (Los_Idos):**
+
+* `v0.1.0` – Estructura base del proyecto.
+* `v0.2.0` – Módulo Login completo.
+* `v0.2.1` – Fix de validaciones de login.
+* `v1.0.0` – Entrega final del semestre.
+
+---
+
+## 4) Cuándo crear un tag (flujo de equipo)
+
+1. **Trabajás en tu rama** y hacés PR → *no taggear aquí*.
+2. **Se aprueba el PR y se mergea a `main`**.
+3. **Ahora sí**: en `main`, crear el **tag** de versión y pushearlo a GitHub.
+4. (Opcional) Crear **Release** en GitHub a partir del tag.
+
+> Regla de oro: **NUNCA** taggear en tu rama personal ni antes del merge a `main`.
+
+---
+
+## 5) Comandos esenciales
+
+### 5.1 Crear tag (anotado)
+
+```
+git checkout main
+git pull origin main
+
+git tag -a v1.0.0 -m "v1.0.0: entrega final del semestre"
+git push origin v1.0.0
+# (opcional) subir todos los tags locales pendientes
+# git push --tags
+```
+
+### 5.2 Crear tag sobre un commit anterior
+
+```
+git log --oneline       # copiate el hash, ej: a1b2c3d
+git tag -a v0.2.0 a1b2c3d -m "v0.2.0: módulo login completo"
+git push origin v0.2.0
+```
+
+### 5.3 Listar y ver información
+
+```
+git tag                 # lista todos los tags
+git tag -l "v1.*"       # filtra por patrón
+git show v1.0.0         # detalles del tag/commit
+```
+
+### 5.4 Checkout de un tag (modo lectura)
+
+```
+git checkout v1.0.0     # detached HEAD (no es una rama)
+```
+
+> Para trabajar desde un tag (p. ej. hotfix):
+
+```
+git checkout -b hotfix/v1.0.1 v1.0.0
+# ... hacés el fix, PR → merge → tag nuevo v1.0.1 en main
+```
+
+### 5.5 Borrar tags
+
+```
+# Local:
+git tag -d v1.0.0
+
+# Remoto (GitHub):
+git push origin :refs/tags/v1.0.0
+```
+
+### 5.6 Renombrar un tag (técnica segura)
+
+> No existe “rename” directo; recrealo. Si el tag ya estaba en remoto, borrarlo también.
+
+```
+# Crear uno nuevo apuntando al mismo commit
+git tag -a v1.0.1 -m "rename desde v1.0.0"
+
+# Borrar el viejo local y remoto
+git tag -d v1.0.0
+git push origin :refs/tags/v1.0.0
+
+# Subir el nuevo
+git push origin v1.0.1
+```
+
+### 5.7 Mover un tag a otro commit (⚠️ con cuidado)
+
+```
+git tag -f -a v1.0.0 <nuevo_hash> -m "mover v1.0.0 al commit correcto"
+git push -f origin v1.0.0   # puede estar bloqueado si protegen tags
+```
+
+---
+
+## 6) Comparaciones y changelog
+
+### 6.1 Diff entre tags
+
+```
+git diff v0.2.0..v1.0.0
+```
+
+### 6.2 Commits entre tags
+
+```
+git log --oneline v0.2.0..v1.0.0
+```
+
+### 6.3 Ordenar tags por versión (útil en scripts)
+
+```
+git tag --sort=v:refname   # orden natural (v1 < v1.2 < v1.10)
+```
+
+---
+
+## 7) Traer tags del remoto y sincronización
+
+```
+git fetch --tags                 # trae tags faltantes
+git pull --tags                  # (equivalente común en varios setups)
+git fetch origin --prune --tags  # limpia referencias obsoletas
+```
+
+---
+
+## 8) Releases en GitHub (desde un tag)
+
+1. Pusheá el tag (`git push origin v1.0.0`).
+2. En GitHub: **Releases → Draft a new release**.
+3. Elegí el **tag** (`v1.0.0`), título y descripción (changelog).
+4. (Opcional) Adjuntá binarios/artefactos.
+5. **Publish release**.
+
+> Alternativa con CLI de GitHub (`gh`):
+
+```
+gh release create v1.0.0 --title "v1.0.0" --notes-file CHANGELOG.md
+```
+
+---
+
+## 9) Integración con CI/CD (opcional)
+
+* Muchos pipelines se gatillan **cuando hay un tag nuevo** (ej.: publicar contenedores, compilar artefactos, generar changelog).
+* En GitHub Actions, usá disparadores:
+
+```
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+```
+
+---
+
+## 10) Buenas prácticas del equipo
+
+* **Crear tags solo en `main`** y **después** de mergear PRs aprobados.
+* Usar **anotados** (`-a -m`) y **SemVer** (`vMAJOR.MINOR.PATCH`).
+* Mantener un **CHANGELOG** (manual o auto-generado).
+* Evitar **mover/borrar** tags publicados; si es imprescindible, **comunicar** al equipo.
+* Considerar **proteger tags** en GitHub (Settings → Rules → *Tag protection rules*).
+
+---
+
+## 11) Errores comunes y cómo resolverlos
+
+**“¿Por qué no veo el tag?”**
+
+* No lo subiste: `git push origin vX.Y.Z`
+* No lo trajiste: `git fetch --tags`
+
+**“Detached HEAD” al hacer checkout del tag**
+
+* Es normal: estás “parado” sobre un commit sin rama.
+* Si querés trabajar: `git checkout -b rama-desde-tag vX.Y.Z`
+
+**“No me deja pushear el tag”**
+
+* Puede haber **reglas de protección** de tags en GitHub.
+* Consultá con el owner o usá otro nombre/flujo establecido.
+
+**“Quiero cambiar el nombre de un tag publicado”**
+
+* Borrar remoto + local del viejo → crear y pushear el nuevo (ver 5.6).
+
+---
+
+## 12) Plantilla de mensajes para tags
+
+```
+v1.2.0: integración de base de datos y reportes
+- Nueva: CRUD de clientes y ventas
+- Nueva: Reporte mensual PDF
+- Fix: validación de email en formulario de registro
+- Docs: README actualizado con variables de entorno
+```
+
+Guardar como **nota del tag** o **Release notes**.
+
+---
+
+## 13) Ejemplo aplicado (Los_Idos)
+
+**Objetivo:** cerrar la entrega del Módulo Login.
+
+```
+# 1) PR aprobado y mergeado → main actualizado
+git checkout main
+git pull origin main
+
+# 2) Crear tag de versión
+git tag -a v0.2.0 -m "v0.2.0: módulo Login completo (validación + tests básicos)"
+
+# 3) Subir tag
+git push origin v0.2.0
+
+# 4) (Opcional) Crear Release en GitHub con changelog
+```
+
+**Siguientes hitos sugeridos:**
+
+* `v0.3.0` – Integración Base de Datos (migraciones + seed)
+* `v0.4.0` – Reportes / UI final
+* `v1.0.0` – Entrega final del semestre
+
+---
+
+## 14) Cheklist previo a taggear
+
+* [ ] PRs relevantes **mergeados** en `main`.
+* [ ] `main` **compila** y **tests pasan**.
+* [ ] Cambios **documentados** (README/CHANGELOG).
+* [ ] Nombre **SemVer** elegido (ej.: `v0.3.0`).
+* [ ] Crear **tag anotado** y **pushear** a GitHub.
+* [ ] (Opcional) Crear **Release** con notas.
+
+---
+
+## 15) Resumen FÁCIL
+
+```
+git checkout main
+git pull origin main
+git tag -a v1.0.0 -m "v1.0.0: entrega final"
+git push origin v1.0.0
+```
+
 
